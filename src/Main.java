@@ -3,25 +3,25 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         String palabras = "hola como estas hola todo bien ? que se cuenta hola probando uno dos tres probando uno ";
-        
+
     //creo una lista para poder recorrerla
         List<String> listaPalabras = Arrays.asList(palabras.split(" ")); //metodo split para dividir el string en substrings
-        Set<String> setTemporal = new HashSet<>(); // creo un conjunto temporal usando hashset que no permite valores dulicados
-        List<String> palabrasDuplicadas = new ArrayList<>(); //esta lista vacía se llenará de los duplicados luego de recorrer la lista de palabras
+        Map<String, Integer> ocurrencias = new HashMap<>();//creo un hashMap que sirva para mapear la cantidad de veces que aparece la palabra
 
-        for (String palabra : listaPalabras) { //recorro la lista y pregunto si encuentra duplicados
-            if (!setTemporal.add(palabra)) { //si ya no puede agregar al set quiere decir que está duplicada
-                palabrasDuplicadas.add(palabra); //lo agrego a la lista palabrasDuplicadas
+        for (String palabra : listaPalabras) { //recorro la lista de palabras
+            if (ocurrencias.containsKey(palabra)) { //Verifico si la palabra ya está en el map, incremento el valor
+                ocurrencias.put(palabra, ocurrencias.get(palabra) + 1);
+            } else {
+                ocurrencias.put(palabra, 1); // sino, le asigno valor 1
             }
         }
 
-        Map<String, Integer> ocurrencias = new HashMap<>(); //creo un hashMap que sirva para mapear la cantidad de veces que aparece la palabra
-
-        for(String palabra : palabrasDuplicadas ){ //recorro la lista de palabras duplicadas
-            ocurrencias.put(palabra, Collections.frequency(listaPalabras, palabra)); //uso el metodo put para establecer la palabra como key y la frecuencia u ocurrencia como el valor
+        // Filtro el hashmap para obtener solo las palabras duplicadas
+        for (Map.Entry<String, Integer> entry : ocurrencias.entrySet()) {
+            if (entry.getValue() > 1) { //si el valor asociado a la palabra es mayor a 1, imprimo la palabra con la cantidad de veces que se repite
+                System.out.println(entry);
+            }
         }
-
-        System.out.println(ocurrencias);
-        }
+    }
 
     }
